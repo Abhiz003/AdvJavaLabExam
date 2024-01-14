@@ -120,7 +120,15 @@
 
 %>
 
-    
+    <form>
+    	<select>
+    		option1 title
+    		option2 author
+    		option3 price
+    	</select>
+    	
+    	<input  placeholder search/> submit button value search 
+    </form>
     
 
 </body>
