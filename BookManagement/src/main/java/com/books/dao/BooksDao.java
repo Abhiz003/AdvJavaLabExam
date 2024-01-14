@@ -30,7 +30,7 @@ public class BooksDao {
 			pst.setString(2, book.getAuthor());
 			pst.setString(3, book.getPrice());
 			
-		
+		pst.executeUpdate();
 			
 		} catch (SQLException e) {
 			
@@ -46,7 +46,7 @@ public class BooksDao {
 	}
 	
 	public void delete(int bookId) {
-	String query = "Delete from categories where bookId=?";
+	String query = "Delete from books where bookId=?";
 		
 		try {
 			Connection con = dbCon.createConnection();
@@ -59,6 +59,7 @@ public class BooksDao {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+		
 		
 	}
 	

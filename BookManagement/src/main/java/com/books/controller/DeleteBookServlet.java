@@ -46,7 +46,7 @@ public class DeleteBookServlet extends HttpServlet {
 		
 		
 		booksDao.delete(bookId);
-		res.sendRedirect("AllBooks.jsp");
+		res.sendRedirect("allBooks.jsp");
 	}
 
 	

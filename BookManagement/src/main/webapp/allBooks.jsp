@@ -17,9 +17,11 @@
             margin: 20px;
         }
 
+		
         h1 {
             color: #007bff;
         }
+        a{ text-decoration:none;}
 
         button {
             padding: 10px;
@@ -73,7 +75,7 @@
 <body>
 	<%! BooksDao booksDao = new BooksDao(new DBconnection()); %>
 
-    <h1>Book Manager | All Books</h1>
+    <h1><a href="index.jsp">Book Manager</a> | All Books</h1>
 
     <a href="addNewBook.jsp"><button>Add New Book +</button></a>
 
