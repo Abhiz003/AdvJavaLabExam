@@ -1,3 +1,7 @@
+<%@page import="com.books.model.Book"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.books.dbutil.DBconnection"%>
+<%@page import="com.books.dao.BooksDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -67,13 +71,17 @@
     </style>
 </head>
 <body>
+	<%! BooksDao booksDao = new BooksDao(new DBconnection()); %>
 
     <h1>Book Manager | All Books</h1>
 
     <a href="addNewBook.jsp"><button>Add New Book +</button></a>
 
-    <table>
-        <thead>
+
+<% ArrayList<Book> books = booksDao.fetchAll();  
+	if(books.size() > 0) {   %>
+		
+		<table>
             <tr>
                 <th>Book ID</th>
                 <th>Title</th>
@@ -81,22 +89,36 @@
                 <th>Price</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-            <!--  dynamic data here-->
+      
+          <!--  dynamic data here-->
+          <%
+          	for(Book book : books) {
+          		%> 
+          		
+          		
             <tr>
-                <td>1</td>
-                <td>Book Title</td>
-                <td>Author Name</td>
-                <td>$19.99</td>
+                <td><%= book.getBookId() %></td>
+                <td><%=book.getTitle() %></td>
+                <td><%=book.getAuthor() %></td>
+                <td>$<%=book.getPrice() %></td>
                 <td class="actions">
-                    <a href="editBook"><button class="edit" >EDIT</button></a>  | 
-                    <a href="deleteBook"><button class="delete">DELETE</button></a>
+                    <a href="editBook?id=<%=book.getBookId()%>"><button class="edit" >EDIT</button></a>  | 
+                    <a href="deleteBook?id=<%=book.getBookId()%>"><button class="delete">DELETE</button></a>
                 </td>
             </tr>
-        </tbody>
+          		<% 
+          	}
+          %>
+        
     </table>
+	
+	<%	
+		
+	}
 
+%>
+
+    
     
 
 </body>

@@ -5,9 +5,9 @@ public class Book {
 	private int bookId;
 	private String title;
 	private String author;
-	private int price;
+	private String price;
 	
-	public Book(int bookId, String title, String author, int price) {
+	public Book(int bookId, String title, String author, String price) {
 		super();
 		this.bookId = bookId;
 		this.title = title;
@@ -17,6 +17,12 @@ public class Book {
 
 	public Book() {
 		super();	
+	}
+
+	public Book(String title, String author, String price) {
+		this.title = title;
+		this.author = author;
+		this.price = price;
 	}
 
 	public int getBookId() {
@@ -43,11 +49,11 @@ public class Book {
 		this.author = author;
 	}
 
-	public int getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 	
