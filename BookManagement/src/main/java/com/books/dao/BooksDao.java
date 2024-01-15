@@ -68,6 +68,49 @@ public class BooksDao {
 		
 	}
 	
+	public ArrayList<Book> fetchByFilter(String arg1, String arg2) {
+		String query = "select bookId, title, author, price from books where ";
+		
+		if(arg1.equals("title")) {  
+			query += "title=?";  
+		}else if (arg1.equals("author")) { 
+			query += "author=?"; 
+		} else if (arg1.equals("price")) { 
+			query += "price=?";
+		}
+		
+		try {
+			
+			Connection con = dbCon.createConnection();
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setString(1, arg2);
+			ResultSet rs = pst.executeQuery();
+			
+			ArrayList<Book> books = new ArrayList<Book>();
+			while(rs.next()) {
+	
+				books.add(new Book(
+						rs.getInt("bookId"),
+						rs.getString("title"),
+						rs.getString("author"),
+						rs.getString("price")
+						));
+			
+			}
+			return books;
+			
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+		
+		
+		
+		
+	
+	
 	
 	public ArrayList<Book> fetchAll() {
 		String  query = "SELECT bookId, title, author, price FROM books";

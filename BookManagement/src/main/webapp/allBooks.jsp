@@ -12,28 +12,31 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f0f5f5; /* Mint color */
             color: #333;
             margin: 20px;
         }
 
-		
         h1 {
-            color: #007bff;
+            color: #008080; /* Darker Mint color */
         }
-        a{ text-decoration:none;}
+
+        a {
+            text-decoration: none;
+            color: #008080; /* Darker Mint color */
+        }
 
         button {
             padding: 10px;
             font-size: 16px;
-            background-color: #28a745;
+            background-color: #6aac8a; /* Mint Green */
             color: #fff;
             border: none;
             cursor: pointer;
         }
 
         button:hover {
-            background-color: #218838;
+            background-color: #5a9972; /* Darker Mint Green on hover */
         }
 
         table {
@@ -49,7 +52,7 @@
         }
 
         th {
-            background-color: #007bff;
+            background-color: #008080; /* Darker Mint color */
             color: #fff;
         }
 
@@ -61,29 +64,61 @@
             padding: 8px;
             margin: 4px;
             font-size: 14px;
-            background-color: #007bff;
+            background-color: #008080; /* Darker Mint color */
             color: #fff;
             border: none;
             cursor: pointer;
         }
 
         .edit:hover, .delete:hover {
-            background-color: #0056b3;
+            background-color: #006666; /* Darker Mint color on hover */
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        select, input, button[type="submit"] {
+            margin-right: 10px;
+            padding: 10px;
+            border: 1px solid #008080; /* Darker Mint color */
+            border-radius: 4px;
+        }
+
+        button[type="submit"] {
+            background-color: #008080; /* Darker Mint color */
+            color: #fff;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #006666; /* Darker Mint color on hover */
         }
     </style>
 </head>
 <body>
-	<%! BooksDao booksDao = new BooksDao(new DBconnection()); %>
+    <%
+    BooksDao booksDao = new BooksDao(new DBconnection());
+    ArrayList<Book> books;
+
+    // Check if the form is submitted for search
+    String searchBy = request.getParameter("searchBy");
+    String searchValue = request.getParameter("searchValue");
+
+    if (searchBy != null && searchValue != null) {
+        books = booksDao.fetchByFilter(searchBy, searchValue);
+    } else { 
+        books = booksDao.fetchAll();
+    }
+    %>
 
     <h1><a href="index.jsp">Book Manager</a> | All Books</h1>
 
     <a href="addNewBook.jsp"><button>Add New Book +</button></a>
 
-
-<% ArrayList<Book> books = booksDao.fetchAll();  
-	if(books.size() > 0) {   %>
-		
-		<table>
+    <% if (books.size() > 0) { %>
+        <table>
             <tr>
                 <th>Book ID</th>
                 <th>Title</th>
@@ -91,45 +126,41 @@
                 <th>Price</th>
                 <th>Actions</th>
             </tr>
-      
-          <!--  dynamic data here-->
-          <%
-          	for(Book book : books) {
-          		%> 
-          		
-          		
-            <tr>
-                <td><%= book.getBookId() %></td>
-                <td><%=book.getTitle() %></td>
-                <td><%=book.getAuthor() %></td>
-                <td>$<%=book.getPrice() %></td>
-                <td class="actions">
-                    <a href="editBook?id=<%=book.getBookId()%>"><button class="edit" >EDIT</button></a>  | 
-                    <a href="deleteBook?id=<%=book.getBookId()%>"><button class="delete">DELETE</button></a>
-                </td>
-            </tr>
-          		<% 
-          	}
-          %>
+            <!-- dynamic data here -->
+            <%
+                for (Book book : books) {
+            %>
+                <tr>
+                    <td><%= book.getBookId() %></td>
+                    <td><%= book.getTitle() %></td>
+                    <td><%= book.getAuthor() %></td>
+                    <td>$<%= book.getPrice() %></td>
+                    <td class="actions">
+                        <a href="editBook?id=<%= book.getBookId() %>">
+                            <button class="edit">EDIT</button>
+                        </a>  | 
+                        <a href="deleteBook?id=<%= book.getBookId() %>">
+                            <button class="delete">DELETE</button>
+                        </a>
+                    </td>
+                </tr>
+            <%
+                }
+            %>
+        </table>
+    <%
+        }
+    %>
+
+    <form action="searchBook" method="get">
+        <select name="searchBy">
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="price">Price</option>
+        </select>
         
-    </table>
-	
-	<%	
-		
-	}
-
-%>
-
-    <form>
-    	<select>
-    		option1 title
-    		option2 author
-    		option3 price
-    	</select>
-    	
-    	<input  placeholder search/> submit button value search 
+        <input type="text" name="searchValue" placeholder="Search..." />
+        <button type="submit">Search</button>
     </form>
-    
-
 </body>
 </html>
